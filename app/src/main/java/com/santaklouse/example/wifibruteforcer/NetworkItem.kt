@@ -9,9 +9,10 @@ data class NetworkItem(
     val bssid: String,
     val status: Status,
     val signal: Int,
-    val passwordUsed: String? = null   // пароль, который подошёл
+    val capabilities: String = "",
+    val passwordUsed: String? = null
 ) : Parcelable
 
 enum class Status {
-    SUCCESS, FAILED, OPEN
+    SUCCESS, TESTING, FAILED, SECURED, OPEN, UNSUPPORTED
 }

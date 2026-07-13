@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">WiFiBruteforcer</string>
+    <string name="device_admin_description">Управление Wi-Fi в изолированной тестовой лаборатории</string>
+    <string name="work_profile_name">Wi-Fi Lab</string>
 </resources>

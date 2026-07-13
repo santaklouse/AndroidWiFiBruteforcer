@@ -24,24 +24,19 @@ class NetworkAdapter(private val networks: List<NetworkItem>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = networks[position]
-
         holder.tvSsid.text = item.ssid
-        holder.tvBssid.text = "BSSID: ${item.bssid}"
+        holder.tvBssid.text = "BSSID: ${item.bssid} • ${item.signal} dBm"
 
-        when (item.status) {
-            Status.SUCCESS -> {
-                holder.tvStatus.text = "✓ Подключено (пароль: ${item.passwordUsed})"
-                holder.tvStatus.setTextColor(ContextCompat.getColor(holder.itemView.context, android.R.color.holo_green_dark))
-            }
-            Status.FAILED -> {
-                holder.tvStatus.text = "✗ Пароль не подошёл"
-                holder.tvStatus.setTextColor(ContextCompat.getColor(holder.itemView.context, android.R.color.darker_gray))
-            }
-            Status.OPEN -> {
-                holder.tvStatus.text = "Открытая сеть"
-                holder.tvStatus.setTextColor(ContextCompat.getColor(holder.itemView.context, android.R.color.holo_blue_dark))
-            }
+        val (text, color) = when (item.status) {
+            Status.SUCCESS -> "✓ Пароль подошёл: ${item.passwordUsed}" to android.R.color.holo_green_dark
+            Status.TESTING -> "Проверка паролей…" to android.R.color.holo_orange_dark
+            Status.FAILED -> "Ни один пароль не подошёл" to android.R.color.darker_gray
+            Status.SECURED -> "Защищённая сеть • ожидает проверки" to android.R.color.darker_gray
+            Status.OPEN -> "Открытая сеть" to android.R.color.holo_blue_dark
+            Status.UNSUPPORTED -> "Enterprise/OWE: этот тип не проверяется" to android.R.color.darker_gray
         }
+        holder.tvStatus.text = text
+        holder.tvStatus.setTextColor(ContextCompat.getColor(holder.itemView.context, color))
     }
 
     override fun getItemCount() = networks.size
